@@ -2,8 +2,8 @@ DESCRIPTION="Upstream's U-boot configured for sunxi devices"
 
 require recipes-bsp/u-boot/u-boot.inc
 
-DEPENDS += " bc-native dtc-native swig-native python-native "
-DEPENDS_append_sun50i = " atf-sunxi "
+DEPENDS += " bc-native swig-native "
+# DEPENDS_append_sun50i = " atf-sunxi "
 
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://Licenses/README;md5=a2c678cfd4a4d97135585cad908541c6"
@@ -17,7 +17,6 @@ DEFAULT_PREFERENCE_sun8i="1"
 DEFAULT_PREFERENCE_sun50i="1"
 
 SRC_URI = "git://github.com/friendlyarm/u-boot.git;protocol=git;branch=sunxi-v2017.x \
-           file://u-boot-pylibfdt-native-build.patch \
            file://boot.cmd \
            "
 
@@ -31,13 +30,11 @@ S = "${WORKDIR}/git"
 UBOOT_ENV_SUFFIX = "scr"
 UBOOT_ENV = "boot"
 
-EXTRA_OEMAKE += ' HOSTLDSHARED="${BUILD_CC} -shared ${BUILD_LDFLAGS} ${BUILD_CFLAGS}" \
-                  PYTHON=${STAGING_DIR_NATIVE}/usr/bin/python-native/python STAGING_INCDIR=${STAGING_INCDIR_NATIVE} \
-                  STAGING_LIBDIR=${STAGING_LIBDIR_NATIVE}'
+EXTRA_OEMAKE += ' HOSTLDSHARED="${BUILD_CC} -shared ${BUILD_LDFLAGS} ${BUILD_CFLAGS}"
 
-EXTRA_OEMAKE_append_sun50i = " BL31=${DEPLOY_DIR_IMAGE}/bl31.bin "
+EXTRA_OEMAKE_append_sun50i = " BL31=${S}/bl31.bin "
 
-do_compile_sun50i[depends] += "atf-sunxi:do_deploy"
+# do_compile_sun50i[depends] += "atf-sunxi:do_deploy"
 
 do_compile_append() {
     ${B}/tools/mkimage -C none -A arm -T script -d ${WORKDIR}/boot.cmd ${WORKDIR}/${UBOOT_ENV_BINARY}
