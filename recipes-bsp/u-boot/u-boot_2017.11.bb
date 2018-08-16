@@ -17,7 +17,6 @@ DEFAULT_PREFERENCE_sun8i="1"
 DEFAULT_PREFERENCE_sun50i="1"
 
 SRC_URI = "git://github.com/friendlyarm/u-boot.git;protocol=git;branch=sunxi-v2017.x \
-           file://u-boot-pylibfdt-native-build.patch \
            file://boot.cmd \
            "
 
