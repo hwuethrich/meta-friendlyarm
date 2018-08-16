@@ -2,7 +2,7 @@ DESCRIPTION="Upstream's U-boot configured for sunxi devices"
 
 require recipes-bsp/u-boot/u-boot.inc
 
-DEPENDS += " bc-native swig-native python3-native "
+DEPENDS += " bc-native dtc-native swig-native python-native "
 DEPENDS_append_sun50i = " atf-sunxi "
 
 LICENSE = "GPLv2+"
@@ -30,7 +30,10 @@ S = "${WORKDIR}/git"
 UBOOT_ENV_SUFFIX = "scr"
 UBOOT_ENV = "boot"
 
-EXTRA_OEMAKE += ' HOSTLDSHARED="${BUILD_CC} -shared ${BUILD_LDFLAGS} ${BUILD_CFLAGS}" '
+EXTRA_OEMAKE += ' HOSTLDSHARED="${BUILD_CC} -shared ${BUILD_LDFLAGS} ${BUILD_CFLAGS}" \
+                  PYTHON=${STAGING_DIR_NATIVE}/usr/bin/python-native/python STAGING_INCDIR=${STAGING_INCDIR_NATIVE} \
+                  STAGING_LIBDIR=${STAGING_LIBDIR_NATIVE}'
+
 EXTRA_OEMAKE_append_sun50i = " BL31=${DEPLOY_DIR_IMAGE}/bl31.bin "
 
 do_compile_sun50i[depends] += "atf-sunxi:do_deploy"
